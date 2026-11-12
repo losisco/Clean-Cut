@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}{{ job.name }} | Clean Cut{% endblock %}
+{% block body_class %}review-body{% endblock %}
+{% block topbar %}<span class="filename" title="{{ job.name }}">{{ job.name }}</span>{% endblock %}
+{% block content %}
+<main id="app" data-job="{{ job.id }}">
+  <section id="processing" class="processing" hidden>
+    <h1 id="processing-title">Working on your video</h1>
+    <ol id="steps" class="steps"></ol>
+    <p class="message error" id="processing-error" role="alert" hidden></p>
+    <button class="primary" id="retry" type="button" hidden>Try again</button>
+  </section>
+
+  <div id="review" class="review" hidden>
+    <section class="viewer" aria-label="Video and transcript">
+      <div class="stage"><video id="player" controls preload="metadata" playsinline></video></div>
+      <div id="timeline" class="timeline" title="Click to jump to this point"><div id="playhead" class="playhead"></div></div>
+      <div class="viewer-tools">
+        <label class="check"><input type="checkbox" id="preview-toggle" checked> Silence censored words while I watch</label>
+        <button class="secondary" id="add-at-playhead" type="button">Add flag at playhead</button>
+      </div>
+      <p class="notice" id="source-note" hidden></p>
+      <div class="transcript-head">
+        <h2>Transcript</h2>
+        <div class="word-action">
+          <span id="word-selection">Click a word to jump to it, shift-click to select several, or right-click to censor or keep every instance.</span>
+          <button class="secondary" id="flag-words" type="button" hidden>Flag selected words</button>
+          <button class="secondary" id="censor-word" type="button" hidden></button>
+          <button class="secondary" id="keep-word" type="button" hidden></button>
+        </div>
+      </div>
+      <p class="legend"><span class="word flag-undecided">undecided</span> <span class="word flag-censor">censor</span> <span class="word flag-keep">keep</span> <span class="word unsure">Whisper was unsure</span></p>
+      <div id="transcript" class="transcript" tabindex="0" aria-label="Transcript"></div>
+    </section>
+
+    <section class="decisions" aria-label="Flags">
+      <div class="decisions-head">
+        <h2>Flags</h2>
+        <div class="filters" id="filters" role="group" aria-label="Filter flags"></div>
+        <div class="head-actions">
+          <button class="quiet" id="censor-all" type="button">Censor all undecided</button>
+          <button class="quiet" id="rescan" type="button">Scan again</button>
+          <a class="quiet" href="{{ url_for('export_csv', job_id=job.id) }}">Export CSV</a>
+        </div>
+      </div>
+      <p class="keys">Keys: C censor, K keep, R replay, ↑ ↓ move between flags</p>
+      <ol id="flag-list" class="flag-list"></ol>
+      <p id="flags-empty" class="empty" hidden></p>
+      <p class="message" id="status" role="status" hidden></p>
+
+      <form id="render-form" class="render">
+        <fieldset class="mode">
+          <legend>Replace censored words with</legend>
+          <label><input type="radio" name="mode" value="mute" checked> Silence</label>
+          <label><input type="radio" name="mode" value="bleep"> Bleep</label>
+        </fieldset>
+        <label class="field padding">
+          <span>Padding on each side (ms)</span>
+          <input type="number" id="padding" min="0" max="1000" step="10" value="100">
+        </label>
+        <p id="render-summary" class="render-summary"></p>
+        <button class="primary" id="render-button" type="submit">Render clean video</button>
+        <div class="steps render-progress" id="render-progress" hidden>
+          <div class="step step-active">
+            <div class="step-head"><span id="render-progress-label">Rendering</span><span class="step-value" id="render-progress-value">0%</span></div>
+            <div class="meter" id="render-meter" role="progressbar" aria-label="Rendering" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+          </div>
+        </div>
+        <p id="render-result" class="render-result" role="status" hidden></p>
+      </form>
+    </section>
+  </div>
+  <div id="word-menu" class="word-menu" role="menu" aria-label="Word actions" hidden>
+    <button id="word-menu-censor" type="button" role="menuitem"></button>
+    <button id="word-menu-keep" type="button" role="menuitem"></button>
+  </div>
+</main>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='review.js') }}"></script>
+{% endblock %}

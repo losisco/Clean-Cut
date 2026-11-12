@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="home">
+  <section class="intro">
+    <h1>Find the words that need to go, then decide on each one.</h1>
+    <p class="specimen" aria-hidden="true">
+      “That was a <mark class="spec-flag">damn</mark> good take, but the
+      <span class="spec-cut">xxxxxx</span> second one needs work.”
+    </p>
+  </section>
+
+  <form id="upload-form" class="upload">
+    <label class="dropzone" id="dropzone">
+      <input type="file" id="video" name="video" accept="{{ extensions|join(',') }}" required>
+      <strong id="drop-title">Choose a video</strong>
+      <span id="drop-note">or drop it here. Your video stays on this computer.</span>
+    </label>
+    <div class="upload-row">
+      <label class="field">
+        <span>Transcription quality</span>
+        <select name="model" id="model">
+          {% for name, description in models.items() %}
+          <option value="{{ name }}" {% if name == default_model %}selected{% endif %}>{{ description }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button class="primary" id="upload-button" type="submit">Upload and transcribe</button>
+    </div>
+    <ol class="steps" id="upload-steps" hidden>
+      <li class="step" id="step-upload">
+        <div class="step-head"><span>Upload the video</span><span class="step-value">0%</span></div>
+        <div class="meter" role="progressbar" aria-label="Upload the video" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+      </li>
+      <li class="step" id="step-save">
+        <div class="step-head"><span>Save a working copy</span><span class="step-value">0%</span></div>
+        <div class="meter" role="progressbar" aria-label="Save a working copy" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+      </li>
+    </ol>
+    <p class="message error" id="upload-error" role="alert" hidden></p>
+  </form>
+
+  <section class="library">
+    <h2>Your videos</h2>
+    {% if jobs %}
+    <ul class="job-list">
+      {% for job in jobs %}
+      <li>
+        <a href="{{ url_for('review', job_id=job.id) }}">
+          <strong>{{ job.name }}</strong>
+          <span>{{ job.created }}</span>
+          <span>
+            {% if job.status == 'ready' %}
+              {{ job.flag_count }} flag{{ '' if job.flag_count == 1 else 's' }}{% if job.undecided %}, {{ job.undecided }} undecided{% endif %}
+            {% elif job.status == 'failed' %}Failed{% else %}{{ job.stage }}{% endif %}
+          </span>
+        </a>
+        <form method="post" action="{{ url_for('delete_job', job_id=job.id) }}" onsubmit="return confirm('Delete this video and its render from Clean Cut? Your original file is not affected.');">
+          <button class="quiet" type="submit" aria-label="Delete {{ job.name }}">Delete</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty">Videos you upload will appear here so you can return to them.</p>
+    {% endif %}
+  </section>
+</main>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='home.js') }}"></script>
+{% endblock %}

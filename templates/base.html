@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Clean Cut{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}">Clean <span class="brand-bar">Cut</span></a>
+    {% block topbar %}{% endblock %}
+    <nav class="topnav">
+      <a href="{{ url_for('home') }}">Videos</a>
+      <a href="{{ url_for('wordlist') }}">Word list</a>
+    </nav>
+  </header>
+  {% block content %}{% endblock %}
+  {% block scripts %}{% endblock %}
+</body>
+</html>

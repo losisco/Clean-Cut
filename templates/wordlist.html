@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Word list | Clean Cut{% endblock %}
+{% block content %}
+<main class="wordlist-page">
+  <h1>Word list</h1>
+  <p>Put one word or phrase on each line. A line in [brackets] starts a new group, and its name appears as the reason on each flag. Use * as a wildcard, so shit* matches shitty.</p>
+  <form method="post">
+    <label class="sr-only" for="words">Words and phrases to flag</label>
+    <textarea id="words" name="words" spellcheck="false">{{ words }}</textarea>
+    <div class="upload-row">
+      <span>{{ count }} entries{% if saved %}. Word list saved.{% endif %}</span>
+      <button class="primary" type="submit">Save word list</button>
+    </div>
+  </form>
+  <p class="hint">New videos use the saved list. To update a video you already uploaded, open it and choose Scan again.</p>
+</main>
+{% endblock %}

@@ -1,0 +1,104 @@
+# Clean Cut word list
+#
+# Put one word or phrase on each line. Lines under [a heading] use that heading
+# as the reason shown on the review screen.
+# Use * as a wildcard: shit* matches shit, shits, and shitty.
+# Matching ignores capitalization and surrounding punctuation.
+#
+# This is a starter list. Adjust it for your audience and standards.
+
+[Profanity]
+*fuck*
+shit
+shits
+shitty
+shitting
+shitted
+shithead*
+*bullshit*
+horseshit
+dipshit*
+apeshit
+batshit
+asshole*
+arsehole*
+bitch
+bitches
+bitching
+bitchy
+sonofabitch
+son of a bitch
+bastard*
+cunt*
+goddamn*
+god damn
+god damned
+twat*
+wanker*
+bollocks
+jackass*
+dumbass*
+smartass*
+piss
+pissed
+pissing
+pisses
+
+[Sexual language]
+blowjob*
+handjob*
+cumshot*
+whore*
+slut*
+jizz*
+tits
+titties
+
+[Slurs]
+nigger*
+nigga*
+faggot*
+fag
+fags
+kike*
+spic
+spics
+chink
+chinks
+gook
+gooks
+wetback*
+tranny
+trannies
+retard
+retards
+retarded
+coon
+coons
+dyke
+dykes
+
+[Mild or depends on context]
+damn*
+hell
+crap
+crappy
+ass
+asses
+dick
+dicks
+cock
+cocks
+pussy
+prick
+pricks
+bloody
+bugger*
+sucks
+
+[Threats and abuse]
+kill yourself
+kys
+go die
+i'll kill you
+i will kill you
